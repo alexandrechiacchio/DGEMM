@@ -4,31 +4,37 @@
 #include <time.h>
 #include <stdlib.h>
 
-#define N (int)8e3 // 2e3 já fica bastante tempo
+#define N (size_t)8e3 // 2e3 já fica bastante tempo
 
 
-double A[N * N], B[N * N], C[N * N];
+double A[N][N], B[N][N], C[N][N];
 
-void dgemm(size_t n, double* A, double* B, double* C){
-	for (size_t i = 0; i < n; ++i){
-		for (size_t j = 0; j < n; ++j){
-			double cij = C[i + j * n]; // cij = C[i][j]
-			for (size_t k = 0; k < n; k++)
-				cij += A[i + k * n] * B[k + j * n]; // cij += A[i][j]*B[k][j]
-			C[i + j * n] = cij; // C[i][j] = cij
+void print_matrix(size_t n, double* A){
+	for (size_t i = 0; i < n; i++){
+		for (size_t j = 0; j < n; j++){
+			printf("%lf ", A[(i * N) + j]);
 		}
+		printf("\n");
 	}
 }
 
+void dgemm(size_t n, double* A, double* B, double* C){
+	for (size_t i = 0; i < n; i++){
+		for (size_t j = 0; j < n; j++){
+			for (size_t k = 0; k < n; k++)
+				C[(i * N) + j] += A[(i * N) + k] * B[(k * N) + j]; // cij += A[i][k]*B[k][j]
+		}
+	}
+}
 
 void make_rand_matrix(size_t n, double* A, double* B, double* C){
 	srand(clock());
 	for (size_t i = 0; i < n * n; i++){
 		A[i] = rand();
 		B[i] = rand();
-		C[i] = rand();
 	}
 }
+
 
 int main(int argc, char* argv[]){
 
@@ -40,9 +46,15 @@ int main(int argc, char* argv[]){
 	dgemm(n, A, B, C);
 	time_t stop = clock();
 
-	printf("Total time = %ldms\n", (stop - start) * 1000 / CLOCKS_PER_SEC);
+	printf("Total time = %lldms\n", (stop - start) * 1000 / CLOCKS_PER_SEC);
 	fflush(stdout);
-	// for(int i = 0; i < 100; i++) printf("%lf ", C[i]);
+
+	// printf("A =\n");
+	// print_matrix(n, A);
+	// printf("B =\n");
+	// print_matrix(n, B);
+	// printf("C =\n");
+	// print_matrix(n, C);
 
 	return 0;
 }
