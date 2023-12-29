@@ -4,9 +4,7 @@ import re
 import numpy as np
 
 
-matrix_test_sizes = [256, 1000, 2000, 4000, 8000]
-
-# subprocess.run(["gfortran", "DGEMM.f90"])
+matrix_test_sizes = [256, 1000, 2000, 4000]
 
 means = []
 for j in matrix_test_sizes:

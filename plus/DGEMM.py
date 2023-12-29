@@ -19,7 +19,7 @@ def main():
   for i in range(size):
     line = []
     for j in range(size):
-      line.append(i*size + j + 1)
+      line.append(float(i*size + j + 1))
     a.append(line)
 
   for i in reversed(a):
