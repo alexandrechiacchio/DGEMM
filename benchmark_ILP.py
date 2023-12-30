@@ -3,17 +3,14 @@ import sys
 import re
 import numpy as np
 
-# matrix_test_sizes = [2000]
-# optimization_levels = ["-O3"]
-
 matrix_test_sizes = [256, 1000, 2000, 4000, 8000]
-optimization_levels = ["-O0", "-O1", "-O2", "-O3"]
+optimization_levels = ["-O3"]
 
 means = dict(list(map(lambda x: (x, []), optimization_levels)))
 # with open("output.txt", 'w+') as sys.stdout:
 for i in optimization_levels:
 	print("making", i)
-	subprocess.run(["gcc", "-mavx", "/home/chiacchio/DGEMM/DGEMM_ILP.c", i, "-o", "a"])
+	subprocess.run(["gcc", "-mavx", "./DGEMM_ILP.c", i, "-w"])
 	for j in matrix_test_sizes:
 		runtimes = []
 		print("running", j)

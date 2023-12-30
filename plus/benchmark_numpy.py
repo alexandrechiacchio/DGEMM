@@ -4,14 +4,14 @@ import re
 import numpy as np
 
 
-matrix_test_sizes = [256, 1000, 2000, 4000]
+matrix_test_sizes = [256, 1000, 2000, 4000, 8000]
 
 means = []
 for j in matrix_test_sizes:
   runtimes = []
   print("running", j)
   for k in range(10):
-    output = subprocess.run(["python", "./DGEMM_numpy.py", str(j)], capture_output=True, encoding="utf-8", )
+    output = subprocess.run(["python", "DGEMM_numpy.py", str(j)], capture_output=True, encoding="utf-8", )
     # print(output.stdout, end='')
     runtimes.append(int(re.findall(r'\d+', output.stdout)[0]))
     sys.stdout.flush()
